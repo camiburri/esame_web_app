@@ -29,8 +29,6 @@ def get_user_by_email(email):
     return user
 
 def get_all_adventurers():
-    """Restituisce tutti gli utenti con ruolo 'adventurer', usato dalla pagina
-    del Guild Council administrator per elencare gli avventurieri registrati."""
     db = get_db_connection()
     users = db.execute(
         "SELECT * FROM Users WHERE role = 'adventurer' ORDER BY username"

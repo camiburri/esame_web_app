@@ -42,7 +42,6 @@ def get_registration_for_user_session(p_user_id, p_session_id):
 
 
 def get_places_taken(p_session_id):
-    """Restituisce quanti posti sono occupati per sessione, per ogni ruolo."""
     query = """
             SELECT role_category, SUM(places) as places
             FROM Registrations
