@@ -244,17 +244,17 @@ def join_quest(session_id):
     places_raw = request.form.get('places')
 
     if role not in MAX_PLACES:
-        flash("Ruolo non valido.", "danger")
+        flash("Invalid role.", "danger")
         return redirect(url_for('quest_session', session_id=session_id))
 
     try:
         places = int(places_raw)
     except (TypeError, ValueError):
-        flash("Numero di posti non valido.", "danger")
+        flash("Invalid number of seats.", "danger")
         return redirect(url_for('quest_session', session_id=session_id))
 
     if places not in (1, 2):
-        flash("Puoi prenotare solo 1 o 2 posti per la stessa quest session.", "danger")
+        flash("You can only reserve 1 or 2 seats for the same quest session.", "danger")
         return redirect(url_for('quest_session', session_id=session_id))
 
     already_joined = registrations_dao.get_registration_for_user_session(current_user.id, session_id)
@@ -283,7 +283,7 @@ def join_quest(session_id):
         existing_end = existing_start + reg['duration']
 
         if new_start < existing_end and existing_start < new_end:
-            flash("This quest overlaps with\"{reg['title']}\", you're already subscribed to.", "danger")
+            flash(f"This quest overlaps with\"{reg['title']}\", you're already subscribed to.", "danger")
             return redirect(url_for('quest_session', session_id=session_id))
 
     registrations_dao.new_registration(current_user.id, session_id, role.capitalize(), places)
@@ -455,7 +455,7 @@ def delete_session(session_id):
         return redirect(url_for('profile_guild'))
 
     quests_dao.delete_session(session_id)
-    flash("Session successfully cancelled..", "success")
+    flash("Session successfully cancelled.", "success")
     return redirect(url_for('profile_guild'))
 
 @app.route('/session/<int:session_id>/modify_guild', methods=['POST'])
