@@ -32,7 +32,7 @@ def session_sort_key(session):
     day_number = DAYS_ORDER.index(session['day'])
     return day_number, session['start_time']
 
-# Posti massimi disponibili per ogni ruolo in una quest session (regola fissa del gioco)
+# Posti massimi disponibili per ogni ruolo in una quest session 
 MAX_PLACES = {'warrior': 4, 'mage': 3, 'healer': 2}
 
 
@@ -48,7 +48,7 @@ def time_to_minutes(time_str):
 # delle 8 ore prima dell'inizio della quest session). Valore fisso, comunicato
 # agli istruttori insieme alle credenziali di test.
 SIMULATED_CURRENT_DAY = 'monday'
-SIMULATED_CURRENT_TIME = '8:00'
+SIMULATED_CURRENT_TIME = '19:00'
 
 
 def day_time_to_week_minutes(day, time_str):

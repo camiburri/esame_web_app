@@ -35,25 +35,25 @@ def populate_db():
     quests_data = [
         
         ('Infiltration Under the Mountain', 180, 'stealth', 'legendary', 
-         'Bypass Amarantha\'s elite patrols to recover an ancient Spring Court artifact. The slightest distraction will be fatal.', 'under_mountain.png'),
+         'Infiltrate the grim corridors Under the Mountain to recover an ancient Spring Court artifact, bypassing Amarantha\'s elite patrols. The walls whisper and the Attor lurks in the shadows: the slightest distraction will be fatal. No mercy will be shown to those who fail.', 'under_mountain.png'),
         
         ('Blood Rite Survival Challenge', 240, 'survival', 'hard', 
-         'Scale the slopes of Mount Ramiel without active magic or guild weapons. Only your raw physical endurance and team cooperation will allow you to reach the monolith.', 'blood_rite.png'),
+         'Face the Blood Rite and scale the treacherous slopes of Mount Ramiel without active magic or guild weapons. In this ruthless Illyrian trial, surrounded by natural traps and brutal warriors, only your raw physical endurance and absolute team cooperation will allow you to reach the monolith.', 'blood_rite.png'),
         
         ('Hunting the Weaver in the Wood', 120, 'combat', 'legendary', 
-         'Retrieve the ancestral ring of the Night Court from the Weaver\'s cottage. A single misstep will awaken her lethal melody.', 'weaver_cottage.png'),
+         'Retrieve the ancestral ring of the Night Court from the Weaver\'s cottage, deep in the heart of a cursed wood. Remember the golden rule: move in total silence. A single, tiny misstep will awaken her lethal melody, and you will become part of her macabre tapestry of bones.', 'weaver_cottage.png'),
         
         ('Riddle of the Book of Breathings', 90, 'puzzle', 'medium', 
-         'Decode the hidden symbols of the Book of Leshon within the Summer Court vaults. Beware of the structural illusion traps.', 'breath_of_life.png'),
+         'Decode the complex hidden symbols of the Book of Leshon concealed within the ancient vaults of the Summer Court. Do not be deceived by the beauty of Tarquin\'s domain: beware of the deadly structural illusion traps guarding the artifact. Only a brilliant mind will survive the magical tides.', 'breath_of_life.png'),
         
         ('Shadowing the Court of Nightmares', 60, 'exploration', 'easy', 
-         'Map the secret pathways and tunnels within the dark faction of the Nightmare Court. Gather critical intel on Keir\'s political moves.', 'nightmare_court.png'),
+         'Map the secret pathways and hidden tunnels within the dark faction of the Court of Nightmares. Your task is to move stealthily through the Hewn City and gather critical intel on Keir\'s political moves and schemes. Evade the gaze of corrupt courtiers and uncover what dark alliances are being forged.', 'nightmare_court.png'),
         
         ('Sealing Velaris Magic Anomalies', 100, 'magic', 'medium', 
-         'Seal the volatile rifts opening in the protective ward of the City of Starlight before continent scouts can track its position.', 'velaris_magic.png'),
+         'Volatile magic rifts are opening in the protective wards of the City of Starlight. It is vital to seal them using ancient runes of power before continent scouts can track its position and shatter our peace. Prepare to manipulate raw magic on the shores of the Sidra to protect Rhysand\'s secret.', 'velaris_magic.png'),
         
         ('Containment of the Library Shadows', 120, 'combat', 'hard', 
-         'The dark entities confined in the lower levels are stirring in Bryaxis\'s absence. Descend into the depths, team up with your companions, and fend off the nameless horrors before they reach the upper floors and the priestesses.', '1783960249.png')
+         'The dark entities confined in the lower levels are stirring in Bryaxis\'s absence. Descend into the abyssal depths of the library beneath the House of Wind, team up with your companions, and fend off the nameless horrors before they reach the upper floors and the priestesses. Face your fears in absolute darkness to restore the seals.', '1783960249.png')
     ]
     cursor.executemany('''
         INSERT INTO Quests (title, duration, type, difficulty, description, image)
