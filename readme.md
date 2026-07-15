@@ -24,7 +24,7 @@ http://camillaburatti.pythonanywhere.com
 **Action:** Booked 2 places as a **Warrior** for *Session 1* (Infiltration Under the Mountain, Monday 10:00).
 
 - username: Azriel  |  password: password123  
-**Action:** Booked 1 place as a **Mage** for *Session 2*(Infiltration Under the Mountain, Monday 15:00).
+**Action:** Booked 1 place as a **Mage** for *Session 2* (Blood Rite Survival Challenge, Monday 15:00, Velaris).
 
 - username: Feyre  |  password: password123  
 **Action:** Booked 2 places as a **Warrior** for *Session 1* (Infiltration Under the Mountain, Monday 10:00).
@@ -32,7 +32,8 @@ http://camillaburatti.pythonanywhere.com
 - username: Nesta  |  password: password123  
 **Action:** Booked 1 place as a **Healer** for *Session 3* (Blood Rite Survival Challenge, Tuesday 09:00).
 
-## Testing Instructions 
+## Testing Instructions
+- **Home:** You can return to the main screen from any page by clicking on the logo located in the site's left corner.
 - The quest session with fully booked roles is Session 1 (Infiltration Under the Mountain, scheduled for Monday at 10:00), where the Warrior category has reached its maximum capacity of 4 places.
 - To test the 8-hour modification limit, check quest session 2 (Infiltration Under the Mountain, Monday at 15:00) which is locked, and quest session 3 (Blood Rite Survival Challenge, Tuesday at 09:00) which is still modifiable since it starts more than 8 hours after the simulated time.
 
