@@ -6,6 +6,9 @@ from datetime import datetime
 from operator import itemgetter
 from models import User
 import users_dao, quests_dao, registrations_dao
+import os 
+
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
 
@@ -437,8 +440,9 @@ def create_quest():
         ext = image_file.filename.split(".")[-1]
         img_name = str(secs) + "." + ext
         
-        # CORREZIONE 3: Inserito il percorso esatto della tua traccia
-        image_file.save("static/images/" + img_name)
+        # Salva l'immagine usando il nuovo percorso
+        upload_path = os.path.join(BASE_DIR, 'static', 'images', img_name)
+        image_file.save(upload_path)
         
         # Salvataggio nel DB con l'immagine personalizzata
         quests_dao.create_quest(title, int(duration), quest_type, difficulty, description, img_name)
