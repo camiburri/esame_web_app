@@ -1,0 +1,265 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Prythian Guild - guild_master profile
+{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+
+    <div class="text-center mb-5">
+        <h3 class="text-gold font-cinzel mb-2">Guild Master Administration</h3>
+    </div>
+
+    <!-- form per programmare una nuova sessione -->
+    <div class="row align-items-stretch mb-5">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <div class="card h-100 filter-panel text-light border-gold shadow">
+                <div class="card-body">
+                    <h5 class="card-title text-gold mb-4 border-bottom border-secondary pb-2">
+                        <i class="fi fi-rs-calendar-plus"></i> Schedule new session
+                    </h5>
+
+                    <form action="{{ url_for('schedule_session') }}" method="POST">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label text-gold small">Select quest</label>
+                                <select name="quest_id" class="form-select bg-dark text-light border-secondary"
+                                    required>
+                                    <option value="" disabled selected> Choose a quest </option>
+                                    {% for q in all_quests %}
+                                    <option value="{{ q.id }}">{{ q.title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-gold small">Day</label>
+                                <select name="day" class="form-select bg-dark text-light border-secondary" required>
+                                    {% for d in ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday',
+                                    'sunday'] %}
+                                    <option value="{{ d }}">{{ d | capitalize }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-gold small">Start time</label>
+                                <input type="time" name="start_time"
+                                    class="form-control bg-dark text-light border-secondary" required>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label text-gold small">Location</label>
+                                <select name="location" class="form-select bg-dark text-light border-secondary"
+                                    required>
+                                    <option value="The House of Wind">The middle</option>
+                                    <option value="The River House">Velaris</option>
+                                    <option value="The Mountain of Ramiel">The mountain of Ramiel</option>
+                                </select>
+                            </div>
+
+                            <div class="col-12 mt-4 text-end">
+                                <button type="submit" class="btn btn-gold w-100">Schedule session</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card h-100 filter-panel text-light border-gold shadow">
+                <div class="card-body">
+                    <h5 class="card-title text-gold mb-4 border-bottom border-secondary pb-2">
+                        <i class="fi fi-rs-document"></i> Create new quest
+                    </h5>
+
+                    <form action="{{ url_for('create_quest') }}" method="POST" enctype="multipart/form-data">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label text-gold small">Quest title</label>
+                                <input type="text" name="title" class="form-control bg-dark text-light border-secondary"
+                                     required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-gold small">Type</label>
+                                <select name="type" class="form-select bg-dark text-light border-secondary" required>
+                                    {% for t in ['combat', 'exploration', 'puzzle', 'stealth', 'magic', 'survival'] %}
+                                    <option value="{{ t }}">{{ t | capitalize }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-gold small">Difficulty</label>
+                                <select name="difficulty" class="form-select bg-dark text-light border-secondary"
+                                    required>
+                                    {% for diff in ['easy', 'medium', 'hard', 'legendary'] %}
+                                    <option value="{{ diff }}">{{ diff | capitalize }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-gold small">Duration (minutes)</label>
+                                <input type="number" name="duration"
+                                    class="form-control bg-dark text-light border-secondary" min="15" step="15"
+                                    placeholder="e.g. 120" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-gold small">Image</label>
+                                <input type="file" name="image" class="form-control bg-dark text-light border-secondary"
+                                    placeholder="e.g. quest_default.png" accept="image/png, image/jpeg" required>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label text-gold small">Description</label>
+                                <textarea name="description" class="form-control bg-dark text-light border-secondary"
+                                    rows="5" required></textarea>
+                            </div>
+
+                            <div class="col-12 mt-4 text-end">
+                                <button type="submit" class="btn btn-gold w-100">Create quest</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="text-center mb-4 mt-5">
+        <h4 class="text-muted-dark">All scheduled quest sessions:</h4>
+        <hr class="border-gold w-25 mx-auto">
+    </div>
+
+    <div class="row">
+        {% for session in all_sessions %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 filter-panel border-gold text-light shadow">
+                <div class="card-body d-flex flex-column">
+
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <span class="badge bg-secondary-gold">{{ session.quest_type | capitalize }}</span>
+
+                        {% if session.total_taken == 0 %}
+                        <span class="badge status-badge status-open">Modifiable</span>
+                        {% else %}
+                        <span class="badge status-badge status-locked">Locked (has participants)</span>
+                        {% endif %}
+                    </div>
+
+                    <h5 class="card-title quest-card-title my-2">{{ session.title }}</h5>
+
+                    <p class="card-text small mb-3 text-muted-dark">
+                        <strong class="text-gold">Day:</strong> {{ session.day | capitalize }}<br>
+                        <strong class="text-gold">Time:</strong> {{ session.start_time }}<br>
+                        <strong class="text-gold">Location:</strong> {{ session.location }}
+                    </p>
+
+                    <div class="text-center mb-2 border-bottom border-secondary pb-1">
+                        <strong class="text-light">Current participations</strong>
+                    </div>
+                    <div class="role-row">
+                        <span>Warriors (Max 4):</span>
+                        <strong class="{% if session.taken_places.warrior == 4 %}text-danger{% else %}text-gold{% endif %}">
+                            {{ session.taken_places.warrior }} occupied
+                        </strong>
+                    </div>
+                    <div class="role-row">
+                        <span>Mages (Max 3):</span>
+                        <strong
+                            class="{% if session.taken_places.mage == 3 %}text-danger{% else %}text-gold{% endif %}">
+                            {{ session.taken_places.mage }} occupied
+                        </strong>
+                    </div>
+                    <div class="role-row">
+                        <span>Healers (Max 2):</span>
+                        <strong
+                            class="{% if session.taken_places.healer == 2 %}text-danger{% else %}text-gold{% endif %}">
+                            {{ session.taken_places.healer }} occupied
+                        </strong>
+                    </div>
+
+                    <div class="mt-auto d-flex gap-2">
+                        {% if session.total_taken == 0 %}
+                        <button type="button" class="btn btn-gold btn-sm flex-fill" data-bs-toggle="modal"
+                            data-bs-target="#modifySessionModal{{ session.id }}">Modify</button>
+
+                        <form method="POST" action="{{ url_for('delete_session', session_id=session.id) }}"
+                            class="flex-fill">
+                            <button type="submit" class="btn btn-danger btn-sm w-100">Cancel</button>
+                        </form>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% for session in all_sessions %}
+{% if session.total_taken == 0 %}
+<div class="modal fade text-dark" id="modifySessionModal{{ session.id }}" tabindex="-1"
+    aria-labelledby="modifySessionModalLabel{{ session.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content custom-navbar border-total-gold text-light">
+            <form action="{{ url_for('modify_session_guild', session_id=session.id) }}" method="POST">
+
+                <div class="modal-header border-bottom rgba-gold-border">
+                    <h5 class="modal-title text-gold" id="modifySessionModalLabel{{ session.id }}">Modify Session</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body text-start">
+                    <div class="mb-3">
+                        <label class="form-label text-gold small">Day</label>
+                        <select name="day" class="form-select bg-dark text-light border-secondary" required>
+                            {% for d in ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+                            %}
+                            <option value="{{ d }}" {% if session.day==d %}selected{% endif %}>{{ d | capitalize }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-gold small">Start Time</label>
+                        <input type="time" name="start_time" class="form-control bg-dark text-light border-secondary"
+                            value="{{ session.start_time }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-gold small">Location</label>
+                        <select name="location" class="form-select bg-dark text-light border-secondary" required>
+                            <option value="The House of Wind" {% if session.location=='The House of Wind' %}selected{%
+                                endif %}>The House of Wind</option>
+                            <option value="The River House" {% if session.location=='The River House' %}selected{% endif
+                                %}>The River House</option>
+                            <option value="The Mountain of Ramiel" {% if session.location=='The Mountain of Ramiel'
+                                %}selected{% endif %}>The Mountain of Ramiel</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-footer border-top rgba-gold-border">
+                    <button type="button" class="btn btn-outline-gold btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-gold btn-sm px-4">Save Changes</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endfor %}
+
+{% endblock %}

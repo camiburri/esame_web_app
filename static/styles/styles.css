@@ -1,0 +1,251 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@400;500;600&display=swap');
+
+
+/* header */
+.custom-navbar{
+    background-color: #12141c;
+    border-radius: 0 0 10px 10px;
+}
+
+.border-gold{
+    border-bottom: 2px solid #d4af37 !important;
+}
+
+.border-total-gold{
+    border: 2px solid #d4af37 !important;
+}
+
+.title-text-gold{
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #d4af37;
+}
+
+.font-cinzel {
+    font-family: 'Cinzel', serif;
+}
+
+.link-gold {
+    color: #ffda6a !important;
+}
+
+.link-gold:hover {
+    color: #f3e5ab !important;
+}
+
+.text-dark {
+    color: #0b0c10 !important;
+}
+
+.btn-gold {
+    background-color: #d4af37;
+    color: #0b0c10 !important;
+    font-weight: 600;
+    border: 1px solid #d4af37;
+}
+
+.btn-gold:hover {
+    background-color: #f3e5ab;
+    border: 1px solid #f3e5ab;
+}
+
+.btn-outline-gold {
+    color: #d4af37 !important;
+    border: 1px solid #d4af37;
+    background-color: transparent;
+    font-weight: 500;
+}
+
+.btn-outline-gold:hover {
+    color: #f3e5ab !important;
+    border-color: #f3e5ab;
+}
+
+.bg-secondary-gold {
+    background-color: rgba(212, 175, 55, 0.15);
+    border: 1px solid #d4af37;
+    color: #d4af37 !important;
+    font-weight: 500;
+}
+
+.text-gold {
+    color: #d4af37 !important;
+}
+
+/* body */
+body{
+    background-color: #0b0c10;
+    color: #a0c1e2;
+    font-family: 'Montserrat';
+    display: flex;
+    flex-direction: column;
+}
+
+.container{
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+main {
+    flex: 1;
+    padding: 2rem 0;
+}
+
+.filter-panel {
+    background-color: #12141c;
+    border: 1px solid #d4af37;
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+/* quest cards in index */
+.quest-card {
+    background-color: #12141c;
+    border: 1px solid #f3e5ab;
+    border-radius: 8px;
+    transition: transform 0.2s;
+}
+
+.quest-card:hover {
+    transform: translateY(-4px);
+    border-color: #f3e5ab;
+}
+
+.quest-card-title {
+    font-family: 'Cinzel', serif;
+    color: #a0c1e2;
+}
+
+.quest-card-img {
+    height: 180px;
+    object-fit: cover;
+    opacity: 0.85;
+    border-radius: 7px 7px 0 0;
+}
+
+.text-muted-dark {
+    color: #a0a5b5 !important;
+}
+
+.role-box {
+    background-color: rgba(11, 12, 16, 0.6);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.role-box .role-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.role-box .role-row:not(:last-child) {
+    margin-bottom: 0.25rem;
+}
+
+/* quest detail page */
+.quest-card-flat:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.quest-detail-img {
+    width: 100%;
+    height: 340px;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+}
+
+.roster-role-box {
+    background-color: rgba(212, 175, 55, 0.08);
+    border: 2px solid #d4af37;
+    border-radius: 8px;
+}
+
+.roster-role-box .roster-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+/* quest join form */
+.rgba-gold-border {
+    border-color: rgba(212, 175, 55, 0.25) !important;
+}
+
+.role-select-group {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.role-select-btn {
+    flex: 1;
+    display: block;
+    background-color: rgba(11, 12, 16, 0.6);
+    border: 2px solid rgba(212, 175, 55, 0.3);
+    border-radius: 8px;
+    color: #a0c1e2;
+    padding: 0.75rem 0.5rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: transform 0.15s, border-color 0.15s, background-color 0.15s;
+}
+
+.role-select-btn:hover {
+    border-color: #d4af37;
+    transform: translateY(-2px);
+}
+
+.role-select-btn i {
+    font-size: 1.4rem;
+    color: #d4af37;
+    transition: color 0.15s;
+}
+
+/* stato selezionato  */
+.btn-check:checked + .role-select-btn {
+    background-color: #d4af37;
+    border-color: #d4af37;
+    color: #0b0c10;
+}
+
+.btn-check:checked + .role-select-btn i {
+    color: #0b0c10;
+}
+
+/* stato ruolo */
+.btn-check:disabled + .role-select-btn {
+    opacity: 0.35;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.full-tag {
+    font-size: 0.65rem;
+    letter-spacing: 1px;
+    color: #e57373;
+    font-weight: 700;
+    margin-top: 2px;
+}
+
+.join-form select.form-select:focus {
+    border-color: #d4af37;
+    box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25); 
+}
+
+/* footer */
+footer {
+    background-color: #12141c;
+    border-top: 1px solid #d4af37;
+    padding: 1.5rem 0;
+    color: #a0a5b5;
+    font-size: small;
+    text-align: center;
+    margin-top: auto;
+}
+
+.link-footer {
+    color: #a0a5b5 !important;
+}

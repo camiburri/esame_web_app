@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Prythian Guild - Register
+{% endblock %}
+
+{% block content %}
+<section class="container my-5">
+    <div class="filter-panel shadow-lg p-5 mb-5">
+        <form class="row gy-3 gx-3 align-items-center" method="POST" action="{{ url_for('register') }}">
+
+            <h1 class="title-text-gold display-6 mb-4 text-center">Join the Prythian Guild</h1>
+
+            <div class="col-md-6">
+                <label for="autoSizingInputGroup" class="form-label text-gold fw-medium">Username</label>
+                <div class="input-group">
+                    <div class="input-group-text bg-secondary-gold text-gold border-gold">@</div>
+                    <input type="text" class="form-control bg-dark text-white border-gold" id="autoSizingInputGroup"
+                        name="username" placeholder="Username" required>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="inputEmail4" class="form-label text-gold fw-medium">Email</label>
+                <input type="email" class="form-control bg-dark text-white border-gold" id="inputEmail4"
+                    name="email" placeholder="Where we send the good stuff" required>
+            </div>
+
+            <div class="col-md-6">
+                <label for="inputPassword" class="form-label text-gold fw-medium">Password</label>
+                <input type="password" class="form-control bg-dark text-white border-gold" id="inputPassword"
+                    name="password" placeholder="Password (please don't use 123456)" required>
+            </div>
+
+            <div class="col-12 d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-gold px-4">Submit</button>
+                <button type="reset" class="btn btn-outline-gold px-4">Clear</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

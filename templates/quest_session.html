@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ quest.title }} - Prythian Guild
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="mb-4">
+        <a href="{{ url_for('home') }}" class="btn btn-outline-gold">Back to Program</a>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="card quest-card quest-card-flat text-light shadow h-100">
+                <img src="{{ url_for('static', filename='images/' + quest.image) }}"
+                     class="quest-detail-img" alt="{{ quest.title }}">
+
+                <div class="card-body">
+                    <span class="badge bg-secondary-gold mb-3">{{ quest.quest_type | capitalize }}</span>
+                    <h2 class="card-title title-text-gold mb-4">{{ quest.title }}</h2>
+                    
+                    <div class="mb-4">
+                        <h5 class="text-gold border-bottom border-gold pb-2">Quest description</h5>
+                        <p class="small">{{ quest.description if quest.description else 'No description available for this quest. Prepare your weapons and stay alert.' }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card quest-card quest-card-flat text-light shadow mb-4">
+                <div class="card-body">
+                    <h5 class="card-title title-text-gold border-bottom border-gold pb-2 mb-3">General information</h5>
+                    
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-3 small">
+                            <strong class="text-gold">Day:</strong> 
+                            <span class="text-light ms-1">{{ quest.day | capitalize }}</span>
+                        </li>
+                        <li class="mb-3 small">
+                            <strong class="text-gold">Time:</strong> 
+                            <span class="text-light ms-1">{{ quest.start_time }}</span>
+                        </li>
+                        <li class="mb-3 small">
+                            <strong class="text-gold">Location:</strong> 
+                            <span class="text-light ms-1">{{ quest.location }}</span>
+                        </li>
+                        <li class="mb-0 small">
+                            <strong class="text-gold">Danger level:</strong> 
+                            <span class="badge bg-secondary-gold ms-1">{{ quest.difficulty | capitalize }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card quest-card quest-card-flat text-light shadow">
+                <div class="card-body">
+                    <h5 class="card-title title-text-gold border-bottom border-gold pb-2 mb-4">Places</h5>
+
+                    <div class="p-3 rounded mb-3 roster-role-box">
+                        <div class="roster-row">
+                            <div>
+                                <h6 class="mb-0 text-gold fw-bold"><i class="fi fi-rs-sword"></i> Warriors</h6>
+                                <small class="text-muted-dark">Frontline combatants and protectors</small>
+                            </div>
+                            <span class="badge bg-secondary-gold fs-6">{{ quest.taken_places.warrior }} / 4</span>
+                        </div>
+                    </div>
+
+                    <div class="p-3 rounded mb-3 roster-role-box">
+                        <div class="roster-row">
+                            <div>
+                                <h6 class="mb-0 text-gold fw-bold"><i class="bi bi-magic"></i> Mages</h6>
+                                <small class="text-muted-dark">Arcane support and elemental damage</small>
+                            </div>
+                            <span class="badge bg-secondary-gold fs-6">{{ quest.taken_places.mage }} / 3</span>
+                        </div>
+                    </div>
+
+                    <div class="p-3 rounded mb-4 roster-role-box">
+                        <div class="roster-row">
+                            <div>
+                                <h6 class="mb-0 text-gold fw-bold"><i class="fi fi-br-flask-potion"></i> Healers</h6>
+                                <small class="text-muted-dark">Restoration and defensive blessings</small>
+                            </div>
+                            <span class="badge bg-secondary-gold fs-6">{{ quest.taken_places.healer }} / 2</span>
+                        </div>
+                    </div>
+
+                    {% if current_user.is_authenticated and current_user.role == 'adventurer' %}
+                    <form method="POST" action="{{ url_for('join_quest', session_id=quest.id) }}" class="join-form">
+                        <h6 class="text-gold small text-uppercase mb-3 border-top rgba-gold-border pt-3">Choose your role</h6>
+
+                        <div class="role-select-group mb-3">
+                            <input type="radio" class="btn-check" name="role" id="roleWarrior" value="warrior"
+                                {% if quest.taken_places.warrior >= 4 %}disabled{% endif %} required>
+                            <label class="role-select-btn" for="roleWarrior">
+                                <i class="fi fi-rs-sword"></i>
+                                <span class="d-block mt-1">Warrior</span>
+                                {% if quest.taken_places.warrior >= 4 %}<span class="full-tag d-block">FULL</span>{% endif %}
+                            </label>
+
+                            <input type="radio" class="btn-check" name="role" id="roleMage" value="mage"
+                                {% if quest.taken_places.mage >= 3 %}disabled{% endif %} required>
+                            <label class="role-select-btn" for="roleMage">
+                                <i class="bi bi-magic"></i>
+                                <span class="d-block mt-1">Mage</span>
+                                {% if quest.taken_places.mage >= 3 %}<span class="full-tag d-block">FULL</span>{% endif %}
+                            </label>
+
+                            <input type="radio" class="btn-check" name="role" id="roleHealer" value="healer"
+                                {% if quest.taken_places.healer >= 2 %}disabled{% endif %} required>
+                            <label class="role-select-btn" for="roleHealer">
+                                <i class="fi fi-br-flask-potion"></i>
+                                <span class="d-block mt-1">Healer</span>
+                                {% if quest.taken_places.healer >= 2 %}<span class="full-tag d-block">FULL</span>{% endif %}
+                            </label>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="placesSelect" class="form-label text-gold small">Places to reserve</label>
+                            <select id="placesSelect" name="places" class="form-select bg-dark text-light border-secondary">
+                                <option value="1">1 place (just me)</option>
+                                <option value="2">2 places (bring a companion)</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-gold w-100 py-2">Join quest</button>
+                    </form>
+                    {% elif not current_user.is_authenticated %}
+                    <div class="text-center">
+                        <p class="small text-muted-dark mb-2">Login as an adventurer to join this quest.</p>
+                        <button type="button" class="btn btn-outline-gold w-100" data-bs-toggle="modal" data-bs-target="#mioModal">Login to Join</button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

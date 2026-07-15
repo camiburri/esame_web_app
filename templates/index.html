@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Prythian Guild
+{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+
+    <h3 class="mb-5 text-center title-text-gold">Adventure Program</h3>
+
+    <!-- filtri -->
+    <div class="card mb-5 filter-panel text-light">
+        <div class="card-body">
+            <h5 class="card-title mb-3 text-gold font-cinzel">Filter quest sessions</h5>
+            <form method="GET" action="{{ url_for('home') }}" class="row g-3">
+
+                <div class="col-md-3">
+                    <label for="day" class="form-label text-gold small">Day</label>
+                    <select id="day" name="day" class="form-select bg-dark text-light border-secondary">
+                        <option value="all">All Days</option>
+                        {% for d in ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] %}
+                        <option value="{{ d }}" {% if filters.day==d %}selected{% endif %}>{{ d | capitalize }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="type" class="form-label text-gold small">Quest type</label>
+                    <select id="type" name="type" class="form-select bg-dark text-light border-secondary">
+                        <option value="all">All types</option>
+                        {% for t in ['combat', 'exploration', 'puzzle', 'stealth', 'magic', 'survival'] %}
+                        <option value="{{ t }}" {% if filters.type==t %}selected{% endif %}>{{ t | capitalize }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="difficulty" class="form-label text-gold small">Difficulty</label>
+                    <select id="difficulty" name="difficulty" class="form-select bg-dark text-light border-secondary">
+                        <option value="all">All difficulties</option>
+                        {% for diff in ['easy', 'medium', 'hard', 'legendary'] %}
+                        <option value="{{ diff }}" {% if filters.difficulty==diff %}selected{% endif %}>{{ diff |
+                            capitalize }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="role" class="form-label text-gold small">Available role</label>
+                    <select id="role" name="role" class="form-select bg-dark text-light border-secondary">
+                        <option value="all">Any role</option>
+                        <option value="warrior" {% if filters.role=='warrior' %}selected{% endif %}>Warrior</option>
+                        <option value="mage" {% if filters.role=='mage' %}selected{% endif %}>Mage</option>
+                        <option value="healer" {% if filters.role=='healer' %}selected{% endif %}>Healer</option>
+                    </select>
+                </div>
+
+                <div class="col-12 text-end mt-4">
+                    <a href="{{ url_for('home') }}" class="btn btn-outline-gold me-2">Reset</a>
+                    <button type="submit" class="btn btn-gold">Apply filters</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% set has_sessions = [] %}
+    {% for day, day_sessions in sessions_order_by_day.items() if day_sessions %}
+    {% set _ = has_sessions.append(1) %}
+    {% endfor %}
+
+    <!-- se non ci sono sessioni -->
+    {% if not has_sessions %}
+    <div class="col-12 text-center py-5">
+        <p class="fs-5 text-muted-dark">No scheduled quest sessions found matching the filters.</p>
+    </div>
+    {% else %}
+
+    <!-- cicliamo normalmente sui giorni -->
+    {% for day, day_sessions in sessions_order_by_day.items() %}
+    {% if day_sessions %}
+    <h3 class="mt-5 mb-4 border-bottom border-gold pb-2 title-text-gold h4">{{ day | capitalize }}</h3>
+    <div class="row">
+        {% for session in day_sessions %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 quest-card text-light shadow">
+                <img src="{{ url_for('static', filename='images/' + session.image) }}"
+                    class="card-img-top quest-card-img" alt="{{ session.title }}">
+
+                <div class="card-body d-flex flex-column">
+
+                    <span class="badge bg-secondary-gold align-self-start mb-2">{{ session.quest_type | capitalize
+                        }}</span>
+
+                    <h5 class="card-title quest-card-title my-2">{{ session.title }}</h5>
+
+                    <p class="card-text small mb-3 text-muted-dark">
+                        <strong class="text-gold">Time:</strong> {{ session.start_time }}<br>
+                        <strong class="text-gold">Location:</strong> {{ session.location }}<br>
+                        <strong class="text-gold">Difficulty:</strong> <span
+                            class="badge border border-gold text-gold bg-transparent ms-1">{{ session.difficulty |
+                            capitalize }}</span>
+                    </p>
+
+                    <div class="p-3 rounded mb-3 small role-box">
+                        <div class="role-row">
+                            <span><i class="fi fi-rs-sword"></i> Warriors:</span>
+                            <strong class="text-gold">{{ session.taken_places.warrior }} / 4</strong>
+                        </div>
+                        <div class="role-row">
+                            <span><i class="bi bi-magic"></i> Mages:</span>
+                            <strong class="text-gold">{{ session.taken_places.mage }} / 3</strong>
+                        </div>
+                        <div class="role-row">
+                            <span><i class="fi fi-br-flask-potion"></i></i> Healers:</span>
+                            <strong class="text-gold">{{ session.taken_places.healer }} / 2</strong>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto">
+                        <a href="{{ url_for('quest_session', session_id=session.id) }}"
+                            class="btn btn-outline-gold w-100">View details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endfor %}
+
+    {% endif %}
+</div>
+{% endblock %}

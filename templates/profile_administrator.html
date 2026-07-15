@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Prythian Guild - guild_council_administrator profile
+{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+
+    <div class="text-center mb-5">
+        <h3 class="text-gold font-cinzel mb-2">Guild Council Administration</h3>
+    </div>
+
+    <!-- griglia con adventurer -->
+    <div class="text-center mb-4 mt-5">
+        <h4 class="text-muted-dark">All registered adventurers</h4>
+        <hr class="border-gold w-25 mx-auto">
+    </div>
+
+    <div class="row mb-5">
+        {% for user in all_users %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 filter-panel border-gold text-light shadow">
+                <div class="card-body d-flex flex-column">
+
+                    <h5 class="card-title quest-card-title my-2">{{ user.username | capitalize }}</h5>
+
+                    <p class="card-text small mb-0 text-muted-dark">
+                        <strong class="text-gold">Email:</strong> {{ user.email }}<br>
+                        <strong class="text-gold">Quest participations:</strong> {{ user.participations_count }}
+                    </p>
+
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <p class="text-center text-muted-dark">No adventurers registered yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- card con statistiche -->
+    <div class="text-center mb-4">
+    <h4 class="text-muted-dark">Guild statistics</h4>
+    <hr class="border-gold w-25 mx-auto">
+</div>
+
+<div class="row mb-5">
+    <div class="col-lg-8 mx-auto">
+        <ul class="list-group list-group-flush filter-panel border-gold text-light shadow rounded">
+
+            <li class="list-group-item bg-transparent text-light d-flex justify-content-between align-items-center">
+                <span>Registered adventurers</span>
+                <strong class="text-gold">{{ stats.total_adventurers }}</strong>
+            </li>
+
+            <li class="list-group-item bg-transparent text-light d-flex justify-content-between align-items-center">
+                <span>Quests</span>
+                <strong class="text-gold">{{ stats.total_quests }}</strong>
+            </li>
+
+            <li class="list-group-item bg-transparent text-light d-flex justify-content-between align-items-center">
+                <span>Quest sessions</span>
+                <strong class="text-gold">{{ stats.total_sessions }}</strong>
+            </li>
+
+            <li class="list-group-item bg-transparent text-light d-flex justify-content-between align-items-center">
+                <span>Total participations</span>
+                <strong class="text-gold">{{ stats.total_participations }}</strong>
+            </li>
+
+            <li class="list-group-item bg-transparent text-light">
+                <span class="d-block mb-2">Reserved places per role:</span>
+                <div class="d-flex justify-content-between small">
+                    <span><i class="fi fi-rs-sword"></i> Warrior</span>
+                    <strong class="text-gold">{{ stats.places_by_role.warrior }}</strong>
+                </div>
+                <div class="d-flex justify-content-between small">
+                    <span><i class="bi bi-magic"></i> Mage</span>
+                    <strong class="text-gold">{{ stats.places_by_role.mage }}</strong>
+                </div>
+                <div class="d-flex justify-content-between small">
+                    <span><i class="fi fi-br-flask-potion"></i> Healer</span>
+                    <strong class="text-gold">{{ stats.places_by_role.healer }}</strong>
+                </div>
+            </li>
+
+            <li class="list-group-item bg-transparent text-light d-flex justify-content-between align-items-center">
+                <span>Most popular quest type</span>
+                {% if stats.most_popular_type %}
+                <strong class="text-gold">{{ stats.most_popular_type | capitalize }}</strong>
+                {% else %}
+                <span class="small text-muted-dark">No participations yet</span>
+                {% endif %}
+            </li>
+
+            <li class="list-group-item bg-transparent text-light">
+                <span class="d-block text-gold mb-1">Busiest quest session{{ 's' if stats.busiest_sessions|length > 1 else '' }}:</span>
+                {% if stats.busiest_sessions %}
+                <ul class="list-unstyled small mb-0">
+                    {% for session in stats.busiest_sessions %}
+                    <li class="mb-1">
+                        {{ session.title }}: <span></span>
+                        {{ session.day | capitalize }} at {{ session.start_time }},
+                        {{ session.location }} <span> - </span>
+                        <strong>{{ session.total_taken }}</strong> places reserved
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <span class="small text-muted-dark">No sessions yet</span>
+                {% endif %}
+            </li>
+
+        </ul>
+    </div>
+</div>
+
+    <!-- elenco quest con sessioni -->
+    <div class="text-center mb-4 mt-5">
+        <h4 class="text-muted-dark">All quests and scheduled sessions</h4>
+        <hr class="border-gold w-25 mx-auto">
+    </div>
+
+    <div class="row mb-5">
+        {% for quest in all_quests %}
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100 filter-panel border-gold text-light shadow">
+                <div class="card-body">
+
+                    <h5 class="card-title quest-card-title mb-2">{{ quest.title }}</h5>
+                    <p class="small text-muted-dark mb-3">
+                        <span class="badge bg-secondary-gold text-dark me-1">{{ quest.type | capitalize }}</span>
+                        <span class="badge bg-secondary-gold text-dark me-1">{{ quest.difficulty | capitalize }}</span>
+                        <span class="badge bg-secondary-gold text-dark">{{ quest.duration }} min</span>
+                    </p>
+                    <p class="small text-muted-dark">{{ quest.description }}</p>
+
+                    <hr class="border-gold opacity-25">
+
+                    <h6 class="text-gold small">Scheduled sessions</h6>
+                    <ul class="list-unstyled small mb-0">
+                        {% for s in all_sessions %}
+                        {% if s.quest_id == quest.id %}
+                        <li class="mb-2">
+                            <i class="bi bi-calendar-event text-gold"></i>
+                            {{ s.day | capitalize }} at {{ s.start_time }} <span>  -  </span> {{ s.location }}
+                            <br>
+                            <span class="text-muted-dark">
+                                Warrior: {{ s.taken_places.warrior }}/4 ·
+                                Mage: {{ s.taken_places.mage }}/3 ·
+                                Healer: {{ s.taken_places.healer }}/2
+                            </span>
+                        </li>
+                        {% endif %}
+                        {% else %}
+                        <li class="text-muted-dark">No sessions scheduled.</li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <p class="text-center text-muted-dark">No quests created yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

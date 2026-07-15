@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Prythian Guild - adventurer profile
+{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+
+    {% if registrations %}
+    <div class="text-center mb-5">
+        <h4 class="text-muted-dark">Every quest you have joined during this week:</h4>
+    </div>
+
+    <div class="row">
+        {% for reg in registrations %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 quest-card text-light shadow">
+                <div class="card-body d-flex flex-column">
+
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <span class="badge bg-secondary-gold">{{ reg.quest_type | capitalize }}</span>
+                        {% if reg.can_modify %}
+                        <span class="badge status-badge status-open">Modifiable</span>
+                        {% else %}
+                        <span class="badge status-badge status-locked">Locked</span>
+                        {% endif %}
+                    </div>
+
+                    <h5 class="card-title quest-card-title my-2">{{ reg.title }}</h5>
+
+                    <p class="card-text small mb-3 text-muted-dark">
+                        <strong class="text-gold">Day:</strong> {{ reg.day | capitalize }}<br>
+                        <strong class="text-gold">Time:</strong> {{ reg.start_time }}<br>
+                        <strong class="text-gold">Location:</strong> {{ reg.location }}
+                    </p>
+
+                    <div class="p-3 rounded mb-3 small role-box">
+                        <div class="role-row">
+                            <span>Role:</span>
+                            <strong class="text-gold">{{ reg.role_category | capitalize }}</strong>
+                        </div>
+                        <div class="role-row">
+                            <span>Reserved places:</span>
+                            <strong class="text-gold">{{ reg.places }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto d-flex gap-2">
+                        <a href="{{ url_for('quest_session', session_id=reg.session_id) }}"
+                           class="btn btn-outline-gold btn-sm flex-fill">View Quest</a>
+                        
+                        {% if reg.can_modify %}
+                        <button type="button" class="btn btn-gold btn-sm flex-fill" data-bs-toggle="modal"
+                                data-bs-target="#modifyModal{{ reg.id }}">
+                            Modify
+                        </button>
+
+                        <form method="POST" action="{{ url_for('cancel_registration', registration_id=reg.id) }}"
+                              class="flex-fill">
+                            <button type="submit" class="btn btn-gold btn-sm w-100">Cancel</button>
+                        </form>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+<!-- form per modificare la session-->
+    {% for reg in registrations %}
+        {% if reg.can_modify %}
+        <div class="modal fade text-dark" id="modifyModal{{ reg.id }}" tabindex="-1"
+             aria-labelledby="modifyModalLabel{{ reg.id }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content custom-navbar border-total-gold text-light">
+                    <form action="{{ url_for('modify_registration', registration_id=reg.id) }}" method="POST">
+
+                        <div class="modal-header border-bottom rgba-gold-border">
+                            <h5 class="modal-title text-gold" id="modifyModalLabel{{ reg.id }}">Modify your Quest</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body text-start">
+                            <div class="mb-3">
+                                <label class="form-label text-gold small">Select new Role</label>
+                                <select name="role" class="form-select bg-dark text-light border-secondary">
+                                    <option value="warrior" {% if reg.role_category|lower == 'warrior' %}selected{% endif %}>Warrior</option>
+                                    <option value="mage" {% if reg.role_category|lower == 'mage' %}selected{% endif %}>Mage</option>
+                                    <option value="healer" {% if reg.role_category|lower == 'healer' %}selected{% endif %}>Healer</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-gold small">Number of Places (1 or 2)</label>
+                                <input type="number" name="places" class="form-control bg-dark text-light border-secondary"
+                                       min="1" max="2" value="{{ reg.places }}" required>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer border-top rgba-gold-border">
+                            <button type="button" class="btn btn-outline-gold btn-sm" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-gold btn-sm px-4">Save Changes</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+
+    {% else %}
+    <div class="text-center py-5">
+        <h3 class="fs-5 text-muted-dark">You haven't joined any quest yet.</h3>
+        <a href="{{ url_for('home') }}" class="btn btn-gold mt-2">Browse the Quest Program</a>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}
