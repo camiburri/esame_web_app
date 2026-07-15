@@ -20,17 +20,17 @@ http://camillaburatti.pythonanywhere.com
 - username: Cauldron  |  password: password123
 
 **Adventurers**
-- username: Cassian  |  password: password123
-    **Action:** Booked 2 places as a **Warrior** for *Session 1* (Infiltration Under the Mountain, Monday 10:00).
+- username: Cassian  |  password: password123  
+**Action:** Booked 2 places as a **Warrior** for *Session 1* (Infiltration Under the Mountain, Monday 10:00).
 
-- username: Azriel  |  password: password123
-    **Action:** Booked 1 place as a **Mage** for *Session 2*(Infiltration Under the Mountain, Monday 15:00).
+- username: Azriel  |  password: password123  
+**Action:** Booked 1 place as a **Mage** for *Session 2*(Infiltration Under the Mountain, Monday 15:00).
 
-- username: Feyre  |  password: password123
-    **Action:** Booked 2 places as a **Warrior** for *Session 1* (Infiltration Under the Mountain, Monday 10:00).
+- username: Feyre  |  password: password123  
+**Action:** Booked 2 places as a **Warrior** for *Session 1* (Infiltration Under the Mountain, Monday 10:00).
 
-- username: Nesta  |  password: password123
-    **Action:** Booked 1 place as a **Healer** for *Session 3* (Blood Rite Survival Challenge, Tuesday 09:00).
+- username: Nesta  |  password: password123  
+**Action:** Booked 1 place as a **Healer** for *Session 3* (Blood Rite Survival Challenge, Tuesday 09:00).
 
 ## Testing Instructions 
 - The quest session with fully booked roles is Session 1 (Infiltration Under the Mountain, scheduled for Monday at 10:00), where the Warrior category has reached its maximum capacity of 4 places.
