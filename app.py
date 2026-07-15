@@ -400,8 +400,6 @@ def create_quest():
         image_file.save(upload_path)
 
         quests_dao.create_quest(title, int(duration), quest_type, difficulty, description, img_name)
-    else:
-        quests_dao.create_quest(title, int(duration), quest_type, difficulty, description, "default_quest.png")
         
     flash("Quest created successfully!", "success")
     return redirect(url_for('profile_guild'))
